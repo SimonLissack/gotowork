@@ -11,20 +11,31 @@ import (
 	"github.com/simonlissack/gotowork/directions"
 )
 
-func collectFlags() (configurationPath, origin, destination string) {
-	flag.StringVar(&configurationPath, "config", "config.json", "Path to config file")
+var (
+	configPath, origin, destination string
+)
+
+func init() {
+	flag.StringVar(&configPath, "config", "", "Path to config file")
 	flag.StringVar(&origin, "origin", "", "Path to config file")
 	flag.StringVar(&destination, "destination", "", "Path to config file")
-
 	flag.Parse()
 
-	return
+	if origin == "" {
+		log.Fatal("No origin address given")
+	}
+
+	if destination == "" {
+		log.Fatal("No destination address given")
+	}
+
+	if configPath == "" {
+		log.Fatal("No configuration file given")
+	}
 }
 
 func main() {
-	configurationPath, origin, destination := collectFlags()
-
-	configFile, err := ioutil.ReadFile(configurationPath)
+	configFile, err := ioutil.ReadFile(configPath)
 	logFatal(err)
 
 	config, err := config.Load(configFile)
