@@ -1,7 +1,6 @@
 package directions
 
 import (
-	"log"
 	"strconv"
 	"time"
 
@@ -28,7 +27,7 @@ type Route struct {
 }
 
 // GetRoute gets the route for a journey
-func GetRoute(journey Journey, config config.GTWConfiguration) (routes []Route) {
+func GetRoute(journey Journey, config config.GTWConfiguration) ([]Route, error) {
 	client, _ := maps.NewClient(maps.WithAPIKey(config.APIKey))
 	departureTime := strconv.FormatInt(time.Now().Unix(), 10)
 
@@ -41,10 +40,10 @@ func GetRoute(journey Journey, config config.GTWConfiguration) (routes []Route) 
 	response, _, err := client.Directions(context.Background(), &directions)
 
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
-	routes = make([]Route, len(response))
+	routes := make([]Route, len(response))
 
 	for i, route := range response {
 		var expecetedTime, usualTime time.Duration
@@ -68,5 +67,5 @@ func GetRoute(journey Journey, config config.GTWConfiguration) (routes []Route) 
 		routes[i] = rt
 	}
 
-	return routes
+	return routes, nil
 }

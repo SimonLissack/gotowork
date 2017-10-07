@@ -46,7 +46,8 @@ func main() {
 		Destination: destination,
 	}
 
-	route := directions.GetRoute(journey, *config)[0]
+	routes, _ := directions.GetRoute(journey, *config)
+	route := routes[0]
 	timeAsString := (route.ExpectedTravelTime / time.Nanosecond).String()
 
 	fmt.Println("Via:", route.Summary)
