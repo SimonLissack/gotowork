@@ -11,8 +11,9 @@ import (
 
 // Journey defines the origin and destination of a route
 type Journey struct {
-	Origin      string `json:"origin"`
-	Destination string `json:"destination"`
+	Origin        string    `json:"origin"`
+	Destination   string    `json:"destination"`
+	DepartureTime time.Time `json:"departureTime"`
 }
 
 // Route describes the journey (distance is measured in meters)
@@ -44,7 +45,7 @@ func NewGMapsClient(config config.GTWConfiguration) RouteClient {
 func (routeClient gMapsClient) GetRoute(journey Journey) ([]Route, error) {
 	apiKey := routeClient.Config.APIKey
 	client, _ := maps.NewClient(maps.WithAPIKey(apiKey))
-	departureTime := strconv.FormatInt(time.Now().Unix(), 10)
+	departureTime := strconv.FormatInt(journey.DepartureTime.Unix(), 10)
 
 	directions := maps.DirectionsRequest{
 		Origin:        journey.Origin,

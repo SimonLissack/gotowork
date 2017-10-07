@@ -42,8 +42,9 @@ func main() {
 	logFatal(err)
 
 	journey := directions.Journey{
-		Origin:      origin,
-		Destination: destination,
+		Origin:        origin,
+		Destination:   destination,
+		DepartureTime: time.Now(),
 	}
 
 	routeClient := directions.NewGMapsClient(*config)
