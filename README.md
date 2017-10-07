@@ -1,4 +1,4 @@
-A small go app which uses the google maps API to get a list of routes from an origin address to a destination address, showing the tim to reach the destination in usual traffic conditions and the expected time based on current traffic.
+A small go app which uses the google maps API to get a list of routes from an origin address to a destination address, showing the time to reach the destination in usual traffic conditions and the expected time based on current traffic.
 
 ## Configuration
 
