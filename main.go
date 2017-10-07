@@ -46,7 +46,8 @@ func main() {
 		Destination: destination,
 	}
 
-	routes, _ := directions.GetRoute(journey, *config)
+	routeClient := directions.NewGMapsClient(*config)
+	routes, _ := routeClient.GetRoute(journey)
 	route := routes[0]
 	timeAsString := (route.ExpectedTravelTime / time.Nanosecond).String()
 

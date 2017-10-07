@@ -26,9 +26,24 @@ type Route struct {
 	Copyright          string        `json:"copyright"`
 }
 
+// RouteClient is an interface for getting routes
+type RouteClient interface {
+	GetRoute(Journey) ([]Route, error)
+}
+
+type gMapsClient struct {
+	Config config.GTWConfiguration
+}
+
+// NewGMapsClient Creates a new client using the google maps API
+func NewGMapsClient(config config.GTWConfiguration) RouteClient {
+	return gMapsClient{Config: config}
+}
+
 // GetRoute gets the route for a journey
-func GetRoute(journey Journey, config config.GTWConfiguration) ([]Route, error) {
-	client, _ := maps.NewClient(maps.WithAPIKey(config.APIKey))
+func (routeClient gMapsClient) GetRoute(journey Journey) ([]Route, error) {
+	apiKey := routeClient.Config.APIKey
+	client, _ := maps.NewClient(maps.WithAPIKey(apiKey))
 	departureTime := strconv.FormatInt(time.Now().Unix(), 10)
 
 	directions := maps.DirectionsRequest{
